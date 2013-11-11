@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>Ginx</Word>
+      <Word>Munq</Word>
+      <Word>Utils</Word>
+      <Word>CNPJ</Word>
+      <Word>CPF</Word>
+    </Recognized>
+  </Words>
+  <Acronyms>
+    <CasingExceptions>
+      <Acronym>CNPJ</Acronym>
+      <Acronym>CPF</Acronym>
+    </CasingExceptions>
+  </Acronyms>
+</Dictionary>
