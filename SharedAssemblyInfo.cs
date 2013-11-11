@@ -10,9 +10,9 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyProduct("Ginx Codename Roma")]
+[assembly: AssemblyProduct("Ginx Framework")]
 [assembly: AssemblyCompany("Ginx Corp.")]
-[assembly: AssemblyCopyright("Copyright © 2013 · Ginx Corp. · Todos os direitos reservados.")]
+[assembly: AssemblyCopyright("Copyright © 2013 · Ginx Corp. · All rights reserved.")]
 [assembly: AssemblyConfiguration("Alpha")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
