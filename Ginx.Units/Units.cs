@@ -143,6 +143,48 @@ namespace Ginx.Units
         }
     }
 
+    /// <summary>
+    /// From: http://en.wikipedia.org/wiki/Metric_prefix
+    /// </summary>
+    public sealed class UnitPrefix
+    {
+        public static readonly UnitPrefix Yocto = new UnitPrefix("yocto", "y", Math.Pow(10, -24));
+        public static readonly UnitPrefix Zepto = new UnitPrefix("zepto", "z", Math.Pow(10, -21));
+        public static readonly UnitPrefix Atto  = new UnitPrefix("atto", "a", Math.Pow(10, -18));
+        public static readonly UnitPrefix Femto = new UnitPrefix("femto", "f", Math.Pow(10, -15));
+        public static readonly UnitPrefix Pico  = new UnitPrefix("pico", "p", Math.Pow(10, -12));
+        public static readonly UnitPrefix Nano  = new UnitPrefix("nano", "n", Math.Pow(10,  -9));
+        public static readonly UnitPrefix Micro = new UnitPrefix("micro", "µ", Math.Pow(10, -6));
+        public static readonly UnitPrefix Milli = new UnitPrefix("milli", "m", Math.Pow(10,  -3));
+        public static readonly UnitPrefix Centi = new UnitPrefix("centi", "c", Math.Pow(10,  -2));
+        public static readonly UnitPrefix Deci  = new UnitPrefix("deci", "d", Math.Pow(10,  -1));
+        public static readonly UnitPrefix Deca  = new UnitPrefix("deca", "da", Math.Pow(10, 1));
+        public static readonly UnitPrefix Hecto = new UnitPrefix("hecto", "h", Math.Pow(10,   2));
+        public static readonly UnitPrefix Kilo  = new UnitPrefix("kilo", "k", Math.Pow(10,   3));
+        public static readonly UnitPrefix Mega  = new UnitPrefix("mega", "M", Math.Pow(10,   6));
+        public static readonly UnitPrefix Giga  = new UnitPrefix("giga", "G", Math.Pow(10,   9));
+        public static readonly UnitPrefix Tera  = new UnitPrefix("tera", "T", Math.Pow(10,  12));
+        public static readonly UnitPrefix Peta  = new UnitPrefix("peta", "P", Math.Pow(10,  15));
+        public static readonly UnitPrefix Exa   = new UnitPrefix("exa", "E", Math.Pow(10,  18));
+        public static readonly UnitPrefix Zetta = new UnitPrefix("zetta", "Z", Math.Pow(10,  21));
+        public static readonly UnitPrefix Yotta = new UnitPrefix("yotta", "Y", Math.Pow(10,  24));
+
+        private readonly string name;
+        private readonly string symbol;
+        private readonly double factor;
+
+        public UnitPrefix(string name, string symbol, double factor)
+        {
+            this.name = name;
+            this.symbol = symbol;
+            this.factor = factor;
+        }
+
+        public string Name { get { return this.name; } }
+        public string Symbol { get { return this.symbol; } }
+        public double Factor { get { return this.factor; } }
+    }
+
     public sealed class Unit
     {
         public static readonly Unit None = new Unit(string.Empty, string.Empty, UnitType.None);
@@ -202,6 +244,18 @@ namespace Ginx.Units
                 string.Format("({0}·{1}", left, right.symbol),
                 left * right.factor,
                 right.unitType);
+        }
+
+        public static Unit operator *(UnitPrefix factor, Unit unit)
+        {
+            if (object.ReferenceEquals(factor, null)) throw new ArgumentNullException("factor");
+            if (object.ReferenceEquals(unit, null)) throw new ArgumentNullException("unit");
+
+            return new Unit(
+                string.Format("{0}{1}", factor.Name, unit.name),
+                string.Format("{0}{1}", factor.Symbol, unit.symbol),
+                factor.Factor * unit.factor,
+                unit.unitType);
         }
 
         public static Unit operator *(Unit left, Unit right)
@@ -584,13 +638,15 @@ namespace Ginx.Units
     [UnitDefinition]
     public sealed class LengthUnits
     {
-        public static readonly Unit Meter = new Unit("meter", "m", SIBaseUnits.Metre);
-        public static readonly Unit MilliMeter = new Unit("millimeter", "mm", 0.001 * Meter);
-        public static readonly Unit CentiMeter = new Unit("centimeter", "cm", 0.01 * Meter);
-        public static readonly Unit DeciMeter = new Unit("decimeter", "dm", 0.1 * Meter);
-        public static readonly Unit DecaMeter = new Unit("decameter", "Dm", 10.0 * Meter);
-        public static readonly Unit HectoMeter = new Unit("hectometer", "Hm", 100.0 * Meter);
-        public static readonly Unit KiloMeter = new Unit("kilometer", "km", 1000.0 * Meter);
+        public static readonly Unit Meter      = new Unit("meter", "m", SIBaseUnits.Metre);
+        public static readonly Unit NanoMeter  = UnitPrefix.Nano * Meter;
+        public static readonly Unit MicroMeter = UnitPrefix.Micro * Meter;
+        public static readonly Unit MilliMeter = UnitPrefix.Milli * Meter;
+        public static readonly Unit CentiMeter = UnitPrefix.Centi * Meter;
+        public static readonly Unit DeciMeter  = UnitPrefix.Deci * Meter;
+        public static readonly Unit DecaMeter  = UnitPrefix.Deca * Meter;
+        public static readonly Unit HectoMeter = UnitPrefix.Hecto * Meter;
+        public static readonly Unit KiloMeter  = UnitPrefix.Kilo * Meter;
 
         public static readonly Unit Inch = new Unit("inch", "in", 0.0254 * Meter);
         public static readonly Unit Foot = new Unit("foot", "ft", 12.0 * Inch);
@@ -605,12 +661,16 @@ namespace Ginx.Units
     public sealed class AreaUnits
     {
         public static readonly Unit SquareMeter = new Unit("meter²", "m²", LengthUnits.Meter.Pow(2));
+        public static readonly Unit SquareNanoMeter = new Unit("nanometer²", "nm²", LengthUnits.NanoMeter.Pow(2));
         public static readonly Unit SquareMilliMeter = new Unit("millimeter²", "mm²", LengthUnits.MilliMeter.Pow(2));
         public static readonly Unit SquareCentiMeter = new Unit("centimeter²", "cm²", LengthUnits.CentiMeter.Pow(2));
         public static readonly Unit SquareKiloMeter = new Unit("kilometer²", "km²", LengthUnits.KiloMeter.Pow(2));
 
         public static readonly Unit Are = new Unit("are", "are", 100.0 * SquareMeter);
         public static readonly Unit HectAre = new Unit("hectare", "ha", 10000.0 * SquareMeter);
+
+        public static readonly Unit Barn = new Unit("barn", "b", Math.Pow(10,-28) * SquareMeter);
+        public static readonly Unit KiloBarn = new Unit("kilobarn", "kb", 1000 * Barn);
     }
 
     [UnitDefinition]
@@ -630,6 +690,7 @@ namespace Ginx.Units
     public static class TimeUnits
     {
         public static readonly Unit Second = new Unit("second", "s", SIBaseUnits.Time);
+        public static readonly Unit NanoSecond = new Unit("nanosecond", "ns", 0.000000001 * Second);
         public static readonly Unit MicroSecond = new Unit("microsecond", "μs", 0.000001 * Second);
         public static readonly Unit MilliSecond = new Unit("millisecond", "ms", 0.001 * Second);
         public static readonly Unit Minute = new Unit("minute", "min", 60.0 * Second);
@@ -644,6 +705,16 @@ namespace Ginx.Units
         public static readonly Unit KilometerPerHour = new Unit("kilometer/hour", "km/h", LengthUnits.KiloMeter / TimeUnits.Hour);
         public static readonly Unit MilePerHour = new Unit("mile/hour", "mi/h", LengthUnits.Mile / TimeUnits.Hour);
         public static readonly Unit Knot = new Unit("knot", "kn", 1.852 * SpeedUnits.KilometerPerHour);
+    }
+
+    [UnitDefinition]
+    public static class AccelerationUnits
+    {
+        public static readonly Unit CentiMeterPerSecondSquared = new Unit("centimeter/second²", "cm/s²", LengthUnits.CentiMeter / TimeUnits.Second.Pow(2));
+        public static readonly Unit MeterPerSecondSquared = new Unit("meter/second²", "m/s²", LengthUnits.Meter / TimeUnits.Second.Pow(2));
+        public static readonly Unit FootPerSecondSquared = new Unit("foot/second²", "ft/s²", LengthUnits.Foot / TimeUnits.Second.Pow(2));
+        public static readonly Unit Galileo = new Unit("galileo", "Gal", CentiMeterPerSecondSquared);
+        public static readonly Unit Gravity = new Unit("gravity", "g0", 9.80665 * MeterPerSecondSquared);
     }
 
     [UnitDefinition]
@@ -710,6 +781,7 @@ namespace Ginx.Units
         public static readonly Unit Hertz = new Unit("Hertz", "hz", TimeUnits.Second.Pow(-1));
         public static readonly Unit KiloHertz = new Unit("KiloHertz", "hz", 1000.0 * Hertz);
         public static readonly Unit MegaHerts = new Unit("MegaHertz", "Mhz", 1000000.0 * Hertz);
+        public static readonly Unit GigaHerts = new Unit("GigaHertz", "Ghz", 1000000000.0 * Hertz);
         public static readonly Unit RPM = new Unit("Rounds per minute", "rpm", TimeUnits.Minute.Pow(-1));
     }
 
