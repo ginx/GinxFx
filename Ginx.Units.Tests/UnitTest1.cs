@@ -14,6 +14,7 @@ namespace Ginx.Units.Tests
             var speed = new Amount(10, SpeedUnits.MeterPerSecond);
             var km = speed.ConvertTo(SpeedUnits.KilometerPerHour);
 
+            var m = string.Format("{0:000}", 9999);
             //var temperature = new Amount(37.5, TemperatureUnits.DegreeCelcius) * 2;
             //var temperatureInDegreeFahrenheit = temperature.ConvertTo(TemperatureUnits.DegreeFahrenheit);
             //var total = temperature + temperatureInDegreeFahrenheit;

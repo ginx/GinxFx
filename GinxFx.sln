@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ginx.Units", "Ginx.Units\Gi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ginx.Units.Tests", "Ginx.Units.Tests\Ginx.Units.Tests.csproj", "{EB174034-8809-44F6-87E5-823B2F4C3174}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sped", "Sped\Sped.csproj", "{BF7C09F9-0C14-4717-91C1-8AFB2A29CA19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{EB174034-8809-44F6-87E5-823B2F4C3174}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB174034-8809-44F6-87E5-823B2F4C3174}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB174034-8809-44F6-87E5-823B2F4C3174}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7C09F9-0C14-4717-91C1-8AFB2A29CA19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7C09F9-0C14-4717-91C1-8AFB2A29CA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7C09F9-0C14-4717-91C1-8AFB2A29CA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7C09F9-0C14-4717-91C1-8AFB2A29CA19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -511,17 +511,6 @@ namespace Ginx.Units
         }
     }
 
-    public sealed class SIBaseUnits
-    {
-        public static readonly UnitType Metre = new UnitType("metre", new[] { 1, 0, 0, 0, 0, 0, 0 });
-        public static readonly UnitType Mass = new UnitType("kilogram", new[] { 0, 1, 0, 0, 0, 0, 0 });
-        public static readonly UnitType Time = new UnitType("second", new[] { 0, 0, 1, 0, 0, 0, 0 });
-        public static readonly UnitType ElectricCurrent = new UnitType("ampere", new[] { 0, 0, 0, 1, 0, 0, 0 });
-        public static readonly UnitType ThermodynamicTemperature = new UnitType("kelvin", new[] { 0, 0, 0, 0, 1, 0, 0 });
-        public static readonly UnitType AmountOfSubstance = new UnitType("mole", new[] { 0, 0, 0, 0, 0, 1, 0 });
-        public static readonly UnitType LuminousIntensity = new UnitType("candela", new[] { 0, 0, 0, 0, 0, 0, 1 });
-    }
-
     public sealed class UnitManager
     {
         private static readonly Lazy<UnitManager> lazyInstance = new Lazy<UnitManager>(() => new UnitManager());
@@ -599,26 +588,26 @@ namespace Ginx.Units
             this.unitsBySymbol[unit.Symbol] = unit;
         }
 
-        public void Register(Type klass)
+        public void Register(Type type)
         {
-            foreach (FieldInfo field in klass.GetFields(BindingFlags.GetField | BindingFlags.Public | BindingFlags.Static))
+            foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.GetField | BindingFlags.Public | BindingFlags.Static))
             {
-                if (field.FieldType == typeof(Unit))
+                if (fieldInfo.FieldType == typeof(Unit))
                 {
-                    this.Register((Unit)field.GetValue(null));
+                    this.Register((Unit)fieldInfo.GetValue(null));
                 }
             }
 
-            foreach (MethodInfo method in klass.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Static))
+            foreach (MethodInfo methodInfo in type.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Static))
             {
-                if (method.GetCustomAttributes(typeof(UnitConversionAttribute), false).Length == 0)
+                if (methodInfo.GetCustomAttributes(typeof(UnitConversionAttribute), false).Length == 0)
                 {
                     continue;
                 }
 
-                if ((method.ReturnType == typeof(void)) && (method.GetParameters().Length == 0))
+                if (methodInfo.ReturnType == typeof(void) && methodInfo.GetParameters().Length == 0)
                 {
-                    method.Invoke(null, new object[0]);
+                    methodInfo.Invoke(null, new object[0]);
                 }
             }
         }
@@ -633,6 +622,17 @@ namespace Ginx.Units
                 }
             }
         }
+    }
+
+    public sealed class SIBaseUnits
+    {
+        public static readonly UnitType Metre = new UnitType("metre", new[] { 1, 0, 0, 0, 0, 0, 0 });
+        public static readonly UnitType Mass = new UnitType("kilogram", new[] { 0, 1, 0, 0, 0, 0, 0 });
+        public static readonly UnitType Time = new UnitType("second", new[] { 0, 0, 1, 0, 0, 0, 0 });
+        public static readonly UnitType ElectricCurrent = new UnitType("ampere", new[] { 0, 0, 0, 1, 0, 0, 0 });
+        public static readonly UnitType ThermodynamicTemperature = new UnitType("kelvin", new[] { 0, 0, 0, 0, 1, 0, 0 });
+        public static readonly UnitType AmountOfSubstance = new UnitType("mole", new[] { 0, 0, 0, 0, 0, 1, 0 });
+        public static readonly UnitType LuminousIntensity = new UnitType("candela", new[] { 0, 0, 0, 0, 0, 0, 1 });
     }
 
     [UnitDefinition]
